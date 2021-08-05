@@ -1,6 +1,7 @@
 import System.Environment
 import Text.Read
-
+import Data.List
+import Data.Function
 
 main :: IO()
 main = do
@@ -19,7 +20,7 @@ main = do
 
 relineBy :: Int -> String -> String
 relineBy len contents =
-    let w = map words . lines $ contents
+    let w = map words . lines $ noret contents
         rel = go [] w len
     in unlines . map unwords $ rel
     where
@@ -30,3 +31,8 @@ relineBy len contents =
             | ( length . unwords $ x' ) > len = cur : go [x] (xs:r) len
             | otherwise = go x' (xs:r) len
             where x' = cur ++ [x]
+        noret :: String -> String
+        noret [] = ""
+        noret ('\n':'\n':xs) = '\n' : '\n' : noret(xs)
+        noret ('\n':xs) = ' ':noret xs
+        noret (x:xs) = x : noret xs
