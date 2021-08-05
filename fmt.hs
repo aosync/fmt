@@ -8,15 +8,10 @@ main = do
     args <- getArgs
     contents <- getContents
 
-    let len = case args of
-                  [] -> (Just 75)
-                  (fst:_) -> readMaybe fst
-
-    case len of
-        Nothing -> do
-            putStr . relineBy 75 $ contents
-        (Just l) -> do
-            putStr . relineBy l $ contents
+    putStr . relineBy (case (headMaybe args >>= readMaybe) of
+                          (Just x) -> x
+                          Nothing -> 75)
+                      $ contents
 
 relineBy :: Int -> String -> String
 relineBy len contents =
@@ -34,5 +29,9 @@ relineBy len contents =
         noret :: String -> String
         noret [] = ""
         noret ('\n':'\n':xs) = '\n' : '\n' : noret(xs)
-        noret ('\n':xs) = ' ':noret xs
+        noret ('\n':xs) = ' ' : noret xs
         noret (x:xs) = x : noret xs
+
+headMaybe :: [a] -> Maybe a
+headMaybe [] = Nothing
+headMaybe (x:_) = Just x
