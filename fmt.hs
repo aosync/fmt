@@ -2,16 +2,14 @@ import System.Environment
 import Text.Read
 import Data.List
 import Data.Function
+import Data.Maybe
 
 main :: IO()
 main = do
     args <- getArgs
     contents <- getContents
 
-    putStr . relineBy (case (headMaybe args >>= readMaybe) of
-                          (Just x) -> x
-                          Nothing -> 75)
-                      $ contents
+    putStr . relineBy (fromMaybe 75 (headMaybe args >>= readMaybe)) $ contents
 
 relineBy :: Int -> String -> String
 relineBy len contents =
