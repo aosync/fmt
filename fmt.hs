@@ -13,9 +13,9 @@ main = do
 
     case len of
         Nothing -> do
-            putStr $ relineBy 75 $ contents
+            putStr . relineBy 75 $ contents
         (Just l) -> do
-            putStr $ relineBy l $ contents
+            putStr . relineBy l $ contents
 
 relineBy :: Int -> String -> String
 relineBy len contents =
